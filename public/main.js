@@ -4,6 +4,7 @@ const form = document.querySelector('#form');
 const form_input = form.input;
 const form_submit = form.submit;
 const form_error = form.querySelector('.form__error');
+const arena = document.querySelector('#arena');
 
 let username;
 let connected = false;
@@ -30,7 +31,11 @@ const buildArena = (users) => {
   list.innerHTML = '';
 
   users.forEach(user => {
-    const output = `<li>${user}</li>`;
+    const output = `<li id="${user.id}" class="list__item">
+                      <label>${user.username}
+                        <input name="arena" type="radio" value="${user.id}">
+                      </label>
+                    </li>`;
     list.innerHTML += output;
   });
 }
@@ -47,6 +52,14 @@ socket.on('add user', users => {
 
 socket.on('update users', users => {
   buildArena(users);
+});
+
+socket.on('return random user', user => {
+  let randomUser = randomUserarena.querySelector(`#${randomUser.id}`);
+
+  if (randomUser.classList.contains('selected')) return;
+
+  randomUser.classList.add('selected');
 });
 
 

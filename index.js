@@ -21,9 +21,19 @@ io.on('connection', (socket) => {
 
     socket.username = username;
     addedUser = true;
-    users.push(username);
+    let user = {
+      username: socket.username,
+      id: socket.id
+    }
+    users.push(user);
 
     io.emit('add user', users);
+  });
+
+  socket.on('start game', () => {
+    let user = shuffle(users)[0];
+
+    io.emit('return random user', user);
   });
 
   socket.on('disconnect', () => {
@@ -35,3 +45,20 @@ io.on('connection', (socket) => {
     }
   });
 });
+
+// Helper functions
+const shuffle = (array) => {
+	let currentIndex = array.length;
+	let temporaryValue, randomIndex;
+
+	while (0 !== currentIndex) {
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
+
+	return array.slice();
+};
