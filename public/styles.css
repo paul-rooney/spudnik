@@ -24,6 +24,7 @@ body {
   min-height: 100%;
 
   display: grid;
+  grid-template-rows: min-content 1fr;
   place-items: center;
 }
 
@@ -34,34 +35,53 @@ textarea {
   font-family: inherit;
 }
 
+header {
+  grid-row: 1;
+  width: 100%;
+  background-color: hsla(var(--hue), 50%, 50%, 1);
+}
+
+  header h1 {
+    text-align: center;
+    margin-bottom: 16px;
+    margin-top: 24px;
+  }
+
 main {
-  position: relative;
+  grid-row: 2;
   height: 100%;
   width: 100%;
   overflow: hidden;
+  position: relative;
 }
 
 section {
+  overflow: auto;
   position: absolute;
   inset: 0;
   transition: transform 250ms ease;
 }
 
   section#view-a {
-    background-color: hsla(calc(var(--hue) + 10), 50%, 50%, 1);
+    background-color: hsla(calc(var(--hue)), 50%, 50%, 1);
   }
 
   section#view-b {
-    background-color: hsla(var(--hue), 50%, 50%, 1);
+    background-color: hsla(var(--hue), 50%, 45%, 1);
   }
 
   section#view-c {
-    background-color: hsla(calc(var(--hue) - 10), 50%, 50%, 1);
+    background-color: hsla(calc(var(--hue)), 50%, 55%, 1);
     transform: translateY(100%);
   }
 
   section#view-b {
     transform: translateX(100%);
+  }
+
+  section#view-d {
+    background-color: hsla(calc(var(--hue)), 50%, 40%, 1);
+    transform: translateX(-100%);
   }
 
   [data-view="B"] section#view-a {
@@ -74,6 +94,10 @@ section {
 
   [data-view="C"] section#view-c {
     transform: translateY(0);
+  }
+
+  [data-view="D"] section#view-d {
+    transform: translateX(0);
   }
 
 .grid {
@@ -107,11 +131,19 @@ section {
 
   .form__input {
     background-color: hsla(var(--hue), 50%, 100%, .4);
+    background-color: transparent;
     border: 2px solid hsla(var(--hue), 50%, 100%, 1);
+    color: #fff;
+    font-weight: 600;
     grid-row: 2;
     margin-top: 8px;
-    padding: 8px;
+    padding: 12px 8px 8px;
   }
+
+    .form__input::placeholder {
+      color: hsla(var(--hue), 50%, 100%, .4);
+      vertical-align: bottom;
+    }
 
     .form__input:focus {
       outline: 2px solid hsla(calc(var(--hue) + 180), 50%, 50%, 1);
@@ -123,11 +155,12 @@ section {
     color: hsla(var(--hue), 50%, 50%, 1);
     border: 2px solid #fff;
     display: block;
+    font-weight: 600;
     grid-column: 2;
     grid-row: 2;
     margin-top: 8px;
     margin-left: auto;
-    padding: 4px 8px;
+    padding: 8px 8px 4px;
   }
 
   .form__error {
@@ -146,7 +179,9 @@ section {
     padding-left: 0;
   }
 
-    .list__item {}
+    .list__item {
+      padding-top: 8px;
+    }
 
       .list__item + .list__item {
         margin-top: 16px;
@@ -164,7 +199,7 @@ section {
       .list__item label {
         color: #fff;
         display: block;
-        font-size: 24px;
+        font-size: 32px;
         font-weight: 600; /* 600 Demi */
         letter-spacing: .075em;
         padding: 4px 8px;

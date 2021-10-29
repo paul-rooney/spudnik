@@ -5,6 +5,7 @@ const form_input = form.input;
 const form_submit = form.submit;
 const form_error = form.querySelector('.form__error');
 const arena = document.querySelector('#arena');
+const waiting_room = document.querySelector('#waiting-room');
 
 let username;
 let connected = false;
@@ -20,23 +21,30 @@ const setUsername = () => {
 
   if (username) {
     player = new Player(username);
-    changeView('B');
+    changeView('D');
   }
 
   socket.emit('add user', username);
 }
 
 const buildArena = (users) => {
-  const list = document.querySelector('ul');
-  list.innerHTML = '';
+  arena.innerHTML = '';
 
   users.forEach(user => {
-    const output = `<li id="${user.id}" class="list__item">
-                      <label>${user.username}
-                        <input name="arena" type="radio" value="${user.id}">
-                      </label>
-                    </li>`;
-    list.innerHTML += output;
+    arena.innerHTML += `
+      <li id="${user.id}" class="list__item">
+        <label>${user.username}
+          <input name="arena" type="radio" value="${user.id}">
+        </label>
+      </li>`;
+  });
+}
+
+const buildWaitingRoom = (users) => {
+  waiting_room.innerHTML = '';
+
+  users.forEach(user => {
+    waiting_room.innerHTML += `<li class="list__item">${user.username}</li>`;
   });
 }
 
@@ -47,6 +55,7 @@ const displayLoginError = (error) => {
 
 // when the server emits 'add user', rebuild the player’s arena UI
 socket.on('add user', users => {
+  buildWaitingRoom(users)
   buildArena(users);
 });
 
