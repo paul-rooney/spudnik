@@ -16,26 +16,33 @@ let users = [];
 io.on('connection', (socket) => {
   let addedUser = false;
 
+  // When the client emits 'add user', check if they’re already connected and
+  // add them to the game if not
   socket.on('add user', (username) => {
-    if (addedUser) return;
+    if (addedUser) {
+      return;
+    } else {
+      addedUser = true;
+    }
 
-    socket.username = username;
-    addedUser = true;
     let user = {
-      username: socket.username,
+      username: username,
       id: socket.id
     }
+    socket.username = username;
     users.push(user);
 
     io.emit('add user', users);
   });
 
+  // When the client emits 'start game', choose a player at random and
   socket.on('start game', () => {
     let user = shuffle(users)[0];
 
     io.emit('return random user', user);
   });
 
+  // When the client disconnects, remove them from the game
   socket.on('disconnect', () => {
     if (addedUser) {
       const index = users.indexOf(socket.username);
@@ -45,6 +52,10 @@ io.on('connection', (socket) => {
     }
   });
 });
+
+
+
+
 
 // Helper functions
 const shuffle = (array) => {

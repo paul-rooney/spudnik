@@ -5,7 +5,7 @@ const form_input = form.input;
 const form_submit = form.submit;
 const form_error = form.querySelector('.form__error');
 const arena = document.querySelector('#arena');
-const waiting_room = document.querySelector('#waiting-room');
+const launchButton = document.querySelector('#buttonLaunch');
 
 let username;
 let connected = false;
@@ -21,13 +21,13 @@ const setUsername = () => {
 
   if (username) {
     player = new Player(username);
-    changeView('D');
+    changeView('B');
   }
 
   socket.emit('add user', username);
 }
 
-const buildArena = (users) => {
+const updateArena = (users) => {
   arena.innerHTML = '';
 
   users.forEach(user => {
@@ -40,36 +40,42 @@ const buildArena = (users) => {
   });
 }
 
-const buildWaitingRoom = (users) => {
-  waiting_room.innerHTML = '';
-
-  users.forEach(user => {
-    waiting_room.innerHTML += `<li class="list__item">${user.username}</li>`;
-  });
-}
-
 const displayLoginError = (error) => {
   form_error.textContent = error;
 }
 
+const startGame = (data) => {
+  console.log(data);
+
+  // enable control panel
+  
+}
+
+
+
+
 
 // when the server emits 'add user', rebuild the player’s arena UI
 socket.on('add user', users => {
-  buildWaitingRoom(users)
-  buildArena(users);
+  // updateWaitingRoom(users)
+  updateArena(users);
 });
 
 socket.on('update users', users => {
-  buildArena(users);
+  updateArena(users);
 });
 
 socket.on('return random user', user => {
-  let randomUser = randomUserarena.querySelector(`#${randomUser.id}`);
+  let randomUser = arena.querySelector(`#${user.id}`);
 
   if (randomUser.classList.contains('selected')) return;
 
   randomUser.classList.add('selected');
+
+  startGame(user);
 });
+
+
 
 
 
@@ -81,6 +87,7 @@ form.addEventListener('submit', (e) => {
   setUsername();
 });
 
+launchButton.addEventListener('click', () => socket.emit('start game'));
 
 
 

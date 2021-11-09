@@ -7,4 +7,5 @@ class Player {
   shout() {
     console.warn('Oi!');
   }
+
 }
