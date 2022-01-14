@@ -53,6 +53,8 @@ main {
   width: 100%;
   overflow: hidden;
   position: relative;
+
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
 section {
@@ -72,33 +74,18 @@ section {
 
   section#view-c {
     background-color: hsla(calc(var(--hue)), 50%, 55%, 1);
-    transform: translateY(100%);
+    /* transform: translateY(100%); */
   }
 
   section#view-b {
-    transform: translateX(100%);
+    /* transform: translateX(100%); */
   }
 
   section#view-d {
     background-color: hsla(calc(var(--hue)), 50%, 40%, 1);
-    transform: translateX(-100%);
+    /* transform: translateX(-100%); */
   }
 
-  [data-view="B"] section#view-a {
-    transform: translateX(-100%);
-  }
-
-  [data-view="B"] section#view-b {
-    transform: translateX(0);
-  }
-
-  [data-view="C"] section#view-c {
-    transform: translateY(0);
-  }
-
-  [data-view="D"] section#view-d {
-    transform: translateX(0);
-  }
 
 .grid {
   display: grid;
